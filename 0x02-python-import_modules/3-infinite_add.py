@@ -1,7 +1,12 @@
 #!/usr/bin/python3
+
 if __name__ == "__main__":
-    from sys import argv
+    import sys
+
+    ac = len(sys.argv) - 1
     res = 0
-    for arg in argv[1:]:
-        res += int(arg)
+
+    if ac > 0:
+        for i in range(ac):
+            res += int(sys.argv[i + 1])
     print("{:d}".format(res))
