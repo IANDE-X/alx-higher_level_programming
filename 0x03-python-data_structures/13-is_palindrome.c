@@ -1,52 +1,31 @@
 #include "lists.h"
-#include <stdlib.h>
-#include <stdio.h>
-/**
- * is_palindrome - check is a linked list is palindrome
- * @head: head of the list
- * Return: 0 if not 1 if it is
- */
 
+/**
+ * is_palindrome - function to call check_pal to see if list is palindrome
+ * @head: ptr to the beginning of the list
+ * Return: 0 if not palindrome else 1
+ */
 int is_palindrome(listint_t **head)
 {
-	listint_t *current = *head, *prev, *next, *left_head, *right_head;
-	int list_len = 0, i = 0, not_p = 0;
+	if (head == NULL || *head == NULL)
+		return (1);
+	return (check_pal(head, *head));
+}
 
-	if (*head == NULL || head == NULL)
+/**
+ * check_pal - function to check if the list is palindrome
+ * @head: ptr to the beginning of the list
+ * @last: ptr to the end of the list
+ * Return: 0 if not palindrom else 1
+ */
+int check_pal(listint_t **head, listint_t *last)
+{
+	if (last == NULL)
 		return (1);
-	while (current != NULL)
-		list_len++, current = current->next;
-	if (list_len == 1)
+	if (check_pal(head, last->next) && (*head)->n == last->n)
+	{
+		*head = (*head)->next;
 		return (1);
-	current = *head;
-	for (i = 1; i <= list_len / 2 && current != NULL; i++)
-	{
-		next = current->next;
-		if (prev != NULL)
-			current->next = prev;
-		else
-			current->next = NULL;
-		prev = current, current = next;
 	}
-	right_head = current, left_head = prev;
-	for (i = 1; i <= list_len / 2 && current != NULL; i++)
-	{
-		if (list_len % 2 != 0 && i == 1)
-			current = current->next;
-		if (current->n != prev->n)
-		{
-			not_p = 1;
-			break;
-		}
-		current = current->next, prev = prev->next;
-	}
-	current = left_head, prev = right_head;
-	for (i = 1; i <= list_len / 2 && current != NULL; i++)
-	{
-		next = current->next;
-		if (prev != NULL)
-			current->next = prev;
-		prev = current, current = next;
-	}
-	return (not_p == 1 ? 0 : 1);
+	return (0);
 }
