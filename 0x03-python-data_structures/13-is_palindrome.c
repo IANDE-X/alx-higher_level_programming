@@ -1,52 +1,59 @@
-#include "lists.h"
-#include <stdlib.h>
 #include <stdio.h>
-/**
- * is_palindrome - check is a linked list is palindrome
- * @head: head of the list
- * Return: 0 if not 1 if it is
- */
+#include <stdlib.h>
+#include "lists.h"
 
+/**
+ * is_palindrome - Check if a linked list is a palindrome
+ * @head: The list
+ *
+ * Return: 1 if it's a palindrome, 0 otherwise
+ */
 int is_palindrome(listint_t **head)
 {
-	listint_t *current = *head, *prev, *next, *left_head, *right_head;
-	int list_len = 0, i = 0, not_p = 0;
+	listint_t *a = *head;
+	listint_t *b = *head;
 
-	if (*head == NULL || head == NULL)
+	if (*head == NULL)
 		return (1);
-	while (current != NULL)
-		list_len++, current = current->next;
-	if (list_len == 1)
-		return (1);
-	current = *head;
-	for (i = 1; i <= list_len / 2 && current != NULL; i++)
+
+	while (b && b->next && b->next->next)
 	{
-		next = current->next;
-		if (prev != NULL)
-			current->next = prev;
-		else
-			current->next = NULL;
-		prev = current, current = next;
+		a = a->next;
+		b = b->next->next;
 	}
-	right_head = current, left_head = prev;
-	for (i = 1; i <= list_len / 2 && current != NULL; i++)
+
+	a = reverse_list(&a);
+	b = *head;
+	while (a && b)
 	{
-		if (list_len % 2 != 0 && i == 1)
-			current = current->next;
-		if (current->n != prev->n)
-		{
-			not_p = 1;
-			break;
-		}
-		current = current->next, prev = prev->next;
+		if (a->n != b->n)
+			return (0);
+		a = a->next;
+		b = b->next;
 	}
-	current = left_head, prev = right_head;
-	for (i = 1; i <= list_len / 2 && current != NULL; i++)
+
+	return (1);
+}
+
+/**
+ * reverse_list - Reverse a linked list
+ * @head: The list
+ *
+ * Return: Pointer to the new head
+ */
+listint_t *reverse_list(listint_t **head)
+{
+	listint_t *prev = NULL;
+	listint_t *next = NULL;
+
+	while (*head)
 	{
-		next = current->next;
-		if (prev != NULL)
-			current->next = prev;
-		prev = current, current = next;
+		next = (*head)->next;
+		(*head)->next = prev;
+		prev = *head;
+		*head = next;
 	}
-	return (not_p == 1 ? 0 : 1);
+
+	*head = prev;
+	return (*head);
 }
